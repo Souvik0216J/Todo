@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: rememberMe ? "30d" : "1d" })
 
         const date = new Date();
-        
+
         const options: Intl.DateTimeFormatOptions = {
             timeZone: 'Asia/Kolkata',
             hour12: false,
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
 
         await User.findByIdAndUpdate(
             user._id,
-            { $set: { lastLogin : loginTime } },
+            { $set: { lastLogin: loginTime } },
             { new: true }
         )
 
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
             success: true,
         })
         response.cookies.set("token", token, {
-            httpOnly: true,
+            httpOnly: true, maxAge: rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60
         })
         return response;
 

@@ -60,7 +60,7 @@ export default function Dashboard() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
+  const [recentFilter, setRecentFilter] = useState<'all' | 'pending' | 'in-progress' | 'completed'>('all');
   const [userData, setUserData] = useState<UserData>({
     name: '',
     email: '',
@@ -85,7 +85,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchDashboardData();
-    fetchUserData(); 
+    fetchUserData();
     // Load theme from localStorage
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
     if (savedTheme) {
@@ -278,7 +278,7 @@ export default function Dashboard() {
         // Update local data without reload
         if (response.data.task && response.data.task.id) {
           const newTask: Task = {
-            id: response.data.task.id,  
+            id: response.data.task.id,
             title: formData.description.substring(0, 50),
             description: formData.description,
             status: formData.status as any,
@@ -503,8 +503,8 @@ export default function Dashboard() {
         {getStatusIcon(task.status)}
       </div>
       <div className="flex-1 space-y-2 min-w-0">
-        <div className="flex items-start justify-between gap-2">
-          <p className="font-medium leading-tight">{task.title}</p>
+        <div className="flex items-start justify-between gap-2 w-full">
+          <p className="font-medium leading-tight wrap-break-word line-clamp-2 flex-1 min-w-0">{task.title}</p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -609,6 +609,10 @@ export default function Dashboard() {
   }
 
   if (!data) return null;
+
+  const filteredRecentTasks = data.recentTasks.filter((task) =>
+    recentFilter === 'all' ? true : task.status === recentFilter
+  );
 
   return (
     <>
@@ -771,19 +775,40 @@ export default function Dashboard() {
         <div className="grid gap-4 md:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
-                Recent Tasks
-              </CardTitle>
-              <CardDescription>Your latest task activity</CardDescription>
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5" />
+                    Recent Tasks
+                  </CardTitle>
+                  <CardDescription>Your latest task activity</CardDescription>
+                </div>
+
+                <Select
+                  value={recentFilter}
+                  onValueChange={(value) =>
+                    setRecentFilter(value as 'all' | 'pending' | 'in-progress' | 'completed')
+                  }
+                >
+                  <SelectTrigger className="w-[150px]">
+                    <SelectValue placeholder="Filter status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              {data.recentTasks.length === 0 ? (
+              {filteredRecentTasks.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-8">
                   No recent tasks found
                 </p>
               ) : (
-                data.recentTasks.map((task) => <TaskCard key={task.id} task={task} />)
+                filteredRecentTasks.map((task) => <TaskCard key={task.id} task={task} />)
               )}
             </CardContent>
           </Card>
@@ -954,7 +979,7 @@ export default function Dashboard() {
           </DialogHeader>
           {selectedTask && (
             <div className="py-4">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground wrap-break-word">
                 <strong>Task:</strong> {selectedTask.description}
               </p>
             </div>

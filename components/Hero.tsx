@@ -19,7 +19,7 @@ export default function HeroSection() {
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-background to-background -z-10" />
       <div className="absolute inset-0 bg-grid-pattern opacity-5 -z-10" />
-      
+
       {/* Theme Toggle - Top Right */}
       <div className="absolute top-6 right-6 z-50">
         {mounted && (
@@ -38,7 +38,7 @@ export default function HeroSection() {
           </Button>
         )}
       </div>
-      
+
       <div className="container mx-auto px-4 py-20 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -56,7 +56,7 @@ export default function HeroSection() {
                 <span className="text-primary">One Do</span> at a Time
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-                Stay on top of your tasks with our intuitive to-do list. 
+                Stay on top of your tasks with our intuitive to-do list.
                 Boost productivity, meet deadlines, and achieve your goals effortlessly.
               </p>
             </div>
@@ -123,34 +123,30 @@ export default function HeroSection() {
                   ].map((task, index) => (
                     <div
                       key={index}
-                      className={`flex items-center gap-3 p-3 rounded-lg border ${
-                        task.completed ? 'bg-muted/50' : 'bg-background'
-                      } transition-all hover:shadow-md`}
+                      className={`flex items-center gap-3 p-3 rounded-lg border ${task.completed ? 'bg-muted/50' : 'bg-background'
+                        } transition-all hover:shadow-md`}
                     >
                       <div
-                        className={`h-5 w-5 rounded border-2 flex items-center justify-center ${
-                          task.completed
-                            ? 'bg-primary border-primary'
-                            : 'border-muted-foreground'
-                        }`}
+                        className={`h-5 w-5 rounded border-2 flex items-center justify-center ${task.completed
+                          ? 'bg-primary border-primary'
+                          : 'border-muted-foreground'
+                          }`}
                       >
                         {task.completed && <CheckCircle2 className="h-3 w-3 text-primary-foreground" />}
                       </div>
                       <span
-                        className={`flex-1 text-sm ${
-                          task.completed ? 'line-through text-muted-foreground' : ''
-                        }`}
+                        className={`flex-1 text-sm ${task.completed ? 'line-through text-muted-foreground' : ''
+                          }`}
                       >
                         {task.title}
                       </span>
                       <span
-                        className={`text-xs px-2 py-1 rounded-full ${
-                          task.priority === 'high'
-                            ? 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300'
-                            : task.priority === 'medium'
+                        className={`text-xs px-2 py-1 rounded-full ${task.priority === 'high'
+                          ? 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300'
+                          : task.priority === 'medium'
                             ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300'
                             : 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300'
-                        }`}
+                          }`}
                       >
                         {task.priority}
                       </span>

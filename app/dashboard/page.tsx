@@ -426,11 +426,11 @@ export default function Dashboard() {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'default';
+        return 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300';;
       case 'medium':
-        return 'destructive';
+        return 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300';
       case 'low':
-        return 'secondary';
+        return 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300';
       default:
         return 'outline';
     }
@@ -549,7 +549,7 @@ export default function Dashboard() {
         {/* <p className="text-sm text-muted-foreground line-clamp-2">{task.description}</p> */}
         <div className="flex items-center gap-2 flex-wrap">
           {getStatusBadge(task.status)}
-          <Badge variant={getPriorityColor(task.priority)} className="text-xs">
+          <Badge className={`text-xs ${getPriorityColor(task.priority)}`}>
             {task.priority}
           </Badge>
           {task.dueDate && (

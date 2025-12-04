@@ -62,7 +62,7 @@ export default function SignUpPage() {
           description: "Redirecting you to the login page.",
         });
 
-        setTimeout(() => router.push("/login"), 3000);
+        setTimeout(() => router.push("/login"), 1000);
       }
     } catch (error: any) {
       // Handle user already exists (400)

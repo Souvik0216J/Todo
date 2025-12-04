@@ -27,9 +27,9 @@ export async function PATCH(
     const validStatuses = ["pending", "Pending", "in-progress", "completed"];
     if (!validStatuses.includes(status)) {
       return NextResponse.json(
-        { 
-          error: "Invalid status. Must be: pending, in-progress, or completed", 
-          success: false 
+        {
+          error: "Invalid status. Must be: pending, in-progress, or completed",
+          success: false
         },
         { status: 400 }
       );
@@ -52,9 +52,24 @@ export async function PATCH(
       );
     }
 
+    const date = new Date();
+
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'Asia/Kolkata',
+      hour12: false,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }
+
+    const now = date.toLocaleString('en-IN', options);
+
     // Update only the status
     task.status = status;
-    task.taskUpdatedAt = new Date().toISOString();
+    task.taskUpdatedAt = now;
 
     // Save the user document
     await user.save();

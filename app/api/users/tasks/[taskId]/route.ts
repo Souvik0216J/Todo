@@ -41,12 +41,27 @@ export async function PUT(
       );
     }
 
+    const date = new Date();
+
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'Asia/Kolkata',
+      hour12: false,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }
+
+    const now = date.toLocaleString('en-IN', options);
+
     // Update task fields
     task.description = description.trim();
     task.status = status || task.status;
     task.priority = priority || task.priority;
     task.dueDate = dueDate !== undefined ? dueDate : task.dueDate;
-    task.taskUpdatedAt = new Date().toISOString();
+    task.taskUpdatedAt = now;
 
     // Save the user document
     await user.save();
@@ -95,7 +110,7 @@ export async function DELETE(
 
     // Remove the task from the array
     user.tasks.pull(taskId);
-    
+
     // Save the user document
     await user.save();
 

@@ -28,19 +28,19 @@ export async function POST(request: NextRequest) {
     }
 
     const date = new Date();
-        
-        const options: Intl.DateTimeFormatOptions = {
-            timeZone: 'Asia/Kolkata',
-            hour12: false,
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-        }
 
-        const now = date.toLocaleString('en-IN', options);
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'Asia/Kolkata',
+      hour12: false,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }
+
+    const now = date.toLocaleString('en-IN', options);
 
     // Create new task
     const newTask = {

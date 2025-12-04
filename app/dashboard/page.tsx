@@ -545,7 +545,7 @@ export default function Dashboard() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-2">{task.description}</p>
+        {/* <p className="text-sm text-muted-foreground line-clamp-2">{task.description}</p> */}
         <div className="flex items-center gap-2 flex-wrap">
           {getStatusBadge(task.status)}
           <Badge variant={getPriorityColor(task.priority)} className="text-xs">

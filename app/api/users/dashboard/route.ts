@@ -49,14 +49,13 @@ export async function GET(request: NextRequest) {
       ? Math.round((completedTasks / totalTasks) * 100) 
       : 0;
 
-    // Get recent tasks (last 5 tasks sorted by creation date)
+    // Get recent tasks 
     const recentTasks = [...tasks]
       .sort((a: any, b: any) => {
         const dateA = new Date(a.taskCreatedAt || a.createdAt || 0);
         const dateB = new Date(b.taskCreatedAt || b.createdAt || 0);
         return dateB.getTime() - dateA.getTime();
       })
-      .slice(0, 5)
       .map((task: any) => ({
         id: task._id.toString(),
         title: task.description.substring(0, 50), // First 50 chars as title
@@ -67,7 +66,6 @@ export async function GET(request: NextRequest) {
         createdAt: task.taskCreatedAt || "",
       }));
 
-    // Get upcoming tasks (next 5 pending/in-progress tasks sorted by due date)
     const upcomingTasks = [...tasks]
       .filter((t: any) => t.status !== "completed" && t.dueDate)
       .sort((a: any, b: any) => {

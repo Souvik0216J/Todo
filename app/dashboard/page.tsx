@@ -183,7 +183,7 @@ export default function Dashboard() {
 
     if (action === 'add') {
       newRecentTasks.unshift(updatedTask);
-      if (newRecentTasks.length > 5) newRecentTasks.pop();
+      // if (newRecentTasks.length > 5) newRecentTasks.pop();
 
       // Add to upcoming tasks if it has a due date and is not completed
       if (updatedTask.dueDate && updatedTask.status !== 'completed') {
@@ -419,15 +419,16 @@ export default function Dashboard() {
     if (rate < 25) return 'bg-red-500';
     if (rate < 50) return 'bg-orange-500';
     if (rate < 75) return 'bg-yellow-500';
+    if (rate < 90) return 'bg-lime-500';
     return 'bg-green-500';
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'destructive';
-      case 'medium':
         return 'default';
+      case 'medium':
+        return 'destructive';
       case 'low':
         return 'secondary';
       default:
@@ -802,7 +803,7 @@ export default function Dashboard() {
                 </Select>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 max-h-[500px] overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded [&::-webkit-scrollbar-thumb]:hover:bg-gray-400 dark:[&::-webkit-scrollbar-thumb]:bg-gray-700 dark:[&::-webkit-scrollbar-thumb]:hover:bg-gray-600">
               {filteredRecentTasks.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-8">
                   No recent tasks found

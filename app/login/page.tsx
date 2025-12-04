@@ -43,7 +43,7 @@ export default function LoginPage() {
         toast.success("Welcome back!", {
           description: "Login successful.",
         });
-        setTimeout(() => router.push("/dashboard"), 2000);
+        setTimeout(() => router.push("/dashboard"), 1000);
       }
     } catch (error: any) {
       if (error.response) {
@@ -110,15 +110,6 @@ export default function LoginPage() {
 
             {/* Password */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -227,53 +218,6 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-
-      {/* Right Side - Visual */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-primary/10 via-primary/5 to-background items-center justify-center p-8 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-
-        {/* Content */}
-        <div className="relative z-10 max-w-md space-y-6 text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mb-4">
-            <CheckCircle2 className="h-10 w-10 text-primary" />
-          </div>
-          <h2 className="text-4xl font-bold">Stay Organized</h2>
-          <p className="text-lg text-muted-foreground">
-            Manage your tasks efficiently and boost your productivity with our advanced to-do list platform.
-          </p>
-
-          {/* Features */}
-          <div className="space-y-4 pt-8">
-            {[
-              'Smart task organization',
-              'Real-time collaboration',
-              'Progress tracking',
-              'Secure & private',
-            ].map((feature, index) => (
-              <div key={index} className="flex items-center gap-3 text-left">
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <CheckCircle2 className="h-4 w-4 text-primary" />
-                </div>
-                <span className="text-muted-foreground">{feature}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
-      </div>
-
-      <style jsx>{`
-        .bg-grid-pattern {
-          background-image: 
-            linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px),
-            linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px);
-          background-size: 4rem 4rem;
-        }
-      `}</style>
     </div>
   );
 }

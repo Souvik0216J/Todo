@@ -17,7 +17,7 @@ export default function HeroSection() {
   return (
     <div className="relative overflow-hidden bg-background">
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-background -z-10" />
+      <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-background to-background -z-10" />
       <div className="absolute inset-0 bg-grid-pattern opacity-5 -z-10" />
       
       {/* Theme Toggle - Top Right */}
@@ -64,7 +64,7 @@ export default function HeroSection() {
             {/* CTA Button */}
             <div className="flex flex-col sm:flex-row gap-3 max-w-md">
               <Link href="/login">
-                <Button size="lg" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto hover:cursor-pointer">
                   Get Started
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -74,7 +74,7 @@ export default function HeroSection() {
             {/* Features List */}
             <div className="grid sm:grid-cols-2 gap-4 pt-4">
               <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                   <CheckCircle2 className="h-5 w-5 text-primary" />
                 </div>
                 <div>
@@ -86,7 +86,7 @@ export default function HeroSection() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                   <Zap className="h-5 w-5 text-primary" />
                 </div>
                 <div>

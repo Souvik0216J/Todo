@@ -84,61 +84,7 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Visual */}
-      <div className="hidden lg:flex flex-1 bg-linear-to-br from-primary/10 via-primary/5 to-background items-center justify-center p-8 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-
-        {/* Content */}
-        <div className="relative z-10 max-w-md space-y-6 text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mb-4">
-            <CheckCircle2 className="h-10 w-10 text-primary" />
-          </div>
-          <h2 className="text-4xl font-bold">Join Thousands of Users</h2>
-          <p className="text-lg text-muted-foreground">
-            Start organizing your tasks and achieving your goals today with our powerful platform.
-          </p>
-
-          {/* Stats */}
-          {/* <div className="grid grid-cols-3 gap-4 pt-8">
-            <div className="space-y-2">
-              <p className="text-3xl font-bold text-primary">10K+</p>
-              <p className="text-sm text-muted-foreground">Active Users</p>
-            </div>
-            <div className="space-y-2">
-              <p className="text-3xl font-bold text-primary">50K+</p>
-              <p className="text-sm text-muted-foreground">Tasks Completed</p>
-            </div>
-            <div className="space-y-2">
-              <p className="text-3xl font-bold text-primary">99%</p>
-              <p className="text-sm text-muted-foreground">Satisfaction</p>
-            </div>
-          </div> */}
-
-          {/* Features */}
-          <div className="space-y-4 pt-8">
-            {[
-              'Free forever plan',
-              'No credit card required',
-              'Cancel anytime',
-              'Premium features available',
-            ].map((feature, index) => (
-              <div key={index} className="flex items-center gap-3 text-left">
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <CheckCircle2 className="h-4 w-4 text-primary" />
-                </div>
-                <span className="text-muted-foreground">{feature}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
-      </div>
-
-      {/* Right Side - Form */}
+      {/* Form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-8">
           {/* Header */}
@@ -341,15 +287,6 @@ export default function SignUpPage() {
           </p>
         </div>
       </div>
-
-      <style jsx>{`
-        .bg-grid-pattern {
-          background-image: 
-            linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px),
-            linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px);
-          background-size: 4rem 4rem;
-        }
-      `}</style>
     </div>
   );
 }

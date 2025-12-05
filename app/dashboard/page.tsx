@@ -553,10 +553,10 @@ export default function Dashboard() {
             {task.priority}
           </Badge>
           {task.dueDate && (
-            <span
-              className={`text-xs ${isOverdue(task.dueDate, task.status) ? 'text-red-500 font-medium' : 'text-muted-foreground'}`}
-            >
-              {isOverdue(task.dueDate, task.status) && '⚠️ '}
+            <span className={`text-xs flex items-center gap-1 ${isOverdue(task.dueDate, task.status) ? 'text-red-500 font-medium' : 'text-muted-foreground'}`}>
+              {isOverdue(task.dueDate, task.status) && (
+                <AlertCircle className="h-4 w-4 text-red-500" />
+              )}
               {formatDate(task.dueDate)}
             </span>
           )}

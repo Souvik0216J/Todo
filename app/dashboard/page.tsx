@@ -619,34 +619,38 @@ export default function Dashboard() {
     <>
       <div className="container mx-auto p-6 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back {userData.name}, Here's your task overview.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              Welcome back {userData.name}, Here's your task overview.
+            </p>
           </div>
-          <div className="flex gap-2 items-center">
-            <Button onClick={() => router.push('/notes')} variant="outline">
+          <div className="flex gap-2 items-center flex-wrap sm:flex-nowrap">
+            <Button onClick={() => router.push('/notes')} variant="outline" size="sm" className="sm:h-10">
               <FileText className="mr-2 h-4 w-4" />
-              Notes
+              <span className="hidden sm:inline">Notes</span>
             </Button>
             <Button
               onClick={() => fetchDashboardData(true)}
               variant="outline"
+              size="sm"
+              className="sm:h-10"
               disabled={refreshing}
             >
               <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-              Refresh
+              <span className="hidden sm:inline">Refresh</span>
             </Button>
-            <Button onClick={() => setIsAddDialogOpen(true)}>
-              <Plus className="h-4 w-4" />
-              Add Task
+            <Button onClick={() => setIsAddDialogOpen(true)} size="sm" className="sm:h-10">
+              <Plus className="mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Add Task</span>
             </Button>
 
             {/* User Avatar Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                  <Avatar className="h-10 w-10">
+                <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full">
+                  <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                     <AvatarImage src="" alt={userData.name} />
                     <AvatarFallback>{getInitials(userData.name)}</AvatarFallback>
                   </Avatar>
@@ -687,7 +691,6 @@ export default function Dashboard() {
             </DropdownMenu>
           </div>
         </div>
-
         {/* Stats Cards */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>

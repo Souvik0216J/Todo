@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { CheckCircle2, Circle, Clock, TrendingUp, ListTodo, AlertCircle, Calendar, BarChart3, RefreshCw, Plus, Edit2, Trash2, MoreVertical, User, LogOut, Moon, Sun } from 'lucide-react';
+import { CheckCircle2, Circle, Clock, TrendingUp, ListTodo, AlertCircle, Calendar, BarChart3, RefreshCw, Plus, Edit2, Trash2, MoreVertical, User, LogOut, Moon, Sun, FileText } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -625,6 +625,10 @@ export default function Dashboard() {
             <p className="text-muted-foreground">Welcome back {userData.name}, Here's your task overview.</p>
           </div>
           <div className="flex gap-2 items-center">
+            <Button onClick={() => router.push('/notes')} variant="outline">
+              <FileText className="mr-2 h-4 w-4" />
+              Notes
+            </Button>
             <Button
               onClick={() => fetchDashboardData(true)}
               variant="outline"
@@ -634,7 +638,7 @@ export default function Dashboard() {
               Refresh
             </Button>
             <Button onClick={() => setIsAddDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="h-4 w-4" />
               Add Task
             </Button>
 

@@ -64,6 +64,17 @@ const userSchema = new mongoose.Schema({
         type: [userTask], // this stores array of tasks objects
         default: [],
     },
+
+    notes: {
+        content: {
+            type: String,
+            default: "",
+        },
+        lastUpdate: {
+            type: String,
+            default: "",
+        },
+    },
 });
 
 const User = mongoose.models.todoData || mongoose.model("todoData", userSchema);

@@ -139,6 +139,7 @@ export default function NotesPage() {
   ];
 
   const textColors = [
+    { name: 'White', value: '#ffffff' },
     { name: 'Black', value: '#000000' },
     { name: 'Red', value: '#ff0000' },
     { name: 'Blue', value: '#0000ff' },
@@ -148,7 +149,9 @@ export default function NotesPage() {
   ];
 
   const highlightColors = [
+    { name: 'No highlight', value: 'transparent' },
     { name: 'Yellow', value: '#ffff00' },
+    { name: 'Aqua', value: '#00FFFF' },
     { name: 'Green', value: '#90ee90' },
     { name: 'Blue', value: '#add8e6' },
     { name: 'Pink', value: '#ffb6c1' },

@@ -6,18 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useRouter } from "next/navigation";
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export default function NotesPage() {
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<string>('');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
   const colorInputRef = useRef<HTMLInputElement>(null);
   const bgColorInputRef = useRef<HTMLInputElement>(null);
@@ -26,6 +25,14 @@ export default function NotesPage() {
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  // Set initial content only once
+  useEffect(() => {
+    if (!loading && editorRef.current && notes && !isInitialized) {
+      editorRef.current.innerHTML = notes;
+      setIsInitialized(true);
+    }
+  }, [notes, loading, isInitialized]);
 
   const fetchNotes = async () => {
     try {
@@ -37,14 +44,12 @@ export default function NotesPage() {
       const data = await response.json();
 
       if (data.success) {
-        // API returns notes as an object or string
-        const notesContent = typeof data.notes === 'string' 
-          ? data.notes 
+        const notesContent = typeof data.notes === 'string'
+          ? data.notes
           : data.notes?.content || '';
-        
+
         setNotes(notesContent);
-        
-        // Get lastUpdate from notes object if it exists
+
         if (data.notes?.lastUpdate) {
           setLastSaved(data.notes.lastUpdate);
         }
@@ -77,8 +82,9 @@ export default function NotesPage() {
       if (data.success) {
         toast.success('Notes saved successfully');
         setNotes(content);
-        
-        // Get lastUpdate from the response
+        setHasUnsavedChanges(false);
+        setIsInitialized(true);
+
         if (data.notes?.lastUpdate) {
           setLastSaved(data.notes.lastUpdate);
         }
@@ -92,9 +98,37 @@ export default function NotesPage() {
     }
   };
 
+  const handleDashboardClick = () => {
+    const currentContent = editorRef.current?.innerHTML || '';
+    if (currentContent !== notes) {
+      setShowUnsavedDialog(true);
+    } else {
+      router.push('/dashboard');
+    }
+  };
+
+  const handleSaveAndNavigate = async () => {
+    await handleSave();
+    router.push('/dashboard');
+  };
+
+  const handleDiscardAndNavigate = () => {
+    setShowUnsavedDialog(false);
+    router.push('/dashboard');
+  };
+
+  const handleEditorChange = () => {
+    if (editorRef.current) {
+      const currentContent = editorRef.current.innerHTML;
+      setHasUnsavedChanges(currentContent !== notes);
+    }
+  };
+
   const execCommand = (command: string, value: string | undefined = undefined) => {
     document.execCommand(command, false, value);
     editorRef.current?.focus();
+    // Trigger change detection after command execution
+    handleEditorChange();
   };
 
   const fontSizes = [
@@ -152,6 +186,26 @@ export default function NotesPage() {
         onChange={(e) => execCommand('backColor', e.target.value)}
       />
 
+      {/* Unsaved Changes Dialog */}
+      <AlertDialog open={showUnsavedDialog} onOpenChange={setShowUnsavedDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unsaved Changes</AlertDialogTitle>
+            <AlertDialogDescription>
+              You have unsaved changes in your notes. Do you want to save them before leaving?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleDiscardAndNavigate}>
+              Discard Changes
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleSaveAndNavigate}>
+              Save & Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -159,11 +213,12 @@ export default function NotesPage() {
           <p className="text-muted-foreground">
             Keep track of your thoughts and ideas
             {lastSaved && <span className="ml-2 text-xs">Last saved: {lastSaved}</span>}
+            {hasUnsavedChanges && <span className="ml-2 text-xs text-orange-500">• Unsaved changes</span>}
           </p>
         </div>
         <div className="flex gap-2">
           <Button
-            onClick={() => router.push('/dashboard')}
+            onClick={handleDashboardClick}
             variant="outline"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -171,7 +226,7 @@ export default function NotesPage() {
           </Button>
           <Button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || !hasUnsavedChanges}
           >
             {saving ? (
               <>
@@ -341,7 +396,12 @@ export default function NotesPage() {
             ref={editorRef}
             contentEditable
             className="min-h-[500px] p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background"
-            dangerouslySetInnerHTML={{ __html: notes }}
+            onInput={handleEditorChange}
+            onKeyUp={handleEditorChange}
+            onPaste={handleEditorChange}
+            onCut={handleEditorChange}
+            onBlur={handleEditorChange}
+            suppressContentEditableWarning
             style={{ maxHeight: '600px', overflowY: 'auto' }}
           />
 

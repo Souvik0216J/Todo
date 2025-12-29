@@ -245,10 +245,6 @@ export default function NotesPage() {
 
       {/* Editor Card */}
       <Card>
-        <CardHeader>
-          <CardTitle>Rich Text Editor</CardTitle>
-          <CardDescription>Format your notes with various styling options</CardDescription>
-        </CardHeader>
         <CardContent className="space-y-4">
           {/* Toolbar */}
           <div className="flex flex-wrap gap-2 p-3 bg-muted rounded-lg border">

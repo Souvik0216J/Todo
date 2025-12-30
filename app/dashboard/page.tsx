@@ -73,6 +73,7 @@ export default function Dashboard() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isBulkDeleteDialogOpen, setIsBulkDeleteDialogOpen] = useState(false);
 
   const router = useRouter();
   // Form state
@@ -369,6 +370,31 @@ export default function Dashboard() {
     }
   };
 
+  const handleBulkDeleteCompleted = async () => {
+    try {
+      setIsSubmitting(true);
+      const completedTasks = data?.recentTasks.filter(t => t.status === 'completed') || [];
+
+      // Delete all completed tasks
+      const deletePromises = completedTasks.map(task =>
+        axios.delete(`/api/users/tasks/${task.id}`, { withCredentials: true })
+      );
+
+      await Promise.all(deletePromises);
+
+      toast.success(`${completedTasks.length} completed task(s) deleted successfully`);
+      setIsBulkDeleteDialogOpen(false);
+
+      // Refresh dashboard to get accurate data
+      fetchDashboardData(true);
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.error || 'Failed to delete completed tasks';
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleQuickStatusChange = async (task: Task, newStatus: string) => {
     try {
       const response = await axios.patch(`/api/users/tasks/${task.id}/status`, {
@@ -641,6 +667,18 @@ export default function Dashboard() {
               <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
               <span className="hidden sm:inline">Refresh</span>
             </Button>
+            {data.stats.completedTasks > 0 && (
+              <Button
+                onClick={() => setIsBulkDeleteDialogOpen(true)}
+                variant="outline"
+                size="sm"
+                className="sm:h-10 text-destructive hover:text-destructive"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">Clear Completed</span>
+              </Button>
+            )}
+
             <Button onClick={() => setIsAddDialogOpen(true)} size="sm" className="sm:h-10">
               <Plus className="mr-2 h-4 w-4" />
               <span className="hidden sm:inline">Add Task</span>
@@ -998,6 +1036,35 @@ export default function Dashboard() {
             </Button>
             <Button variant="destructive" onClick={handleDeleteTask} disabled={isSubmitting}>
               {isSubmitting ? 'Deleting...' : 'Delete Task'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Bulk Delete Completed Tasks Dialog */}
+      <Dialog open={isBulkDeleteDialogOpen} onOpenChange={setIsBulkDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete All Completed Tasks</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete all {data.stats.completedTasks} completed task(s)?
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsBulkDeleteDialogOpen(false)}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleBulkDeleteCompleted}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Deleting...' : `Delete ${data.stats.completedTasks} Task(s)`}
             </Button>
           </DialogFooter>
         </DialogContent>
